@@ -98,7 +98,7 @@ const Signup = () => {
     return (
     <>
     <NavbarSpecific
-    pagename= "Welcome to Spotlight"
+    pagename= "Welcome to DIGIPASS"
     backmessage = "<--"
     />
     
