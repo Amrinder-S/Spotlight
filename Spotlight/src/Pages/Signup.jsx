@@ -68,7 +68,7 @@ const Signup = () => {
         }
 
         
-        Axios.post('http://192.168.0.199:8000/signup', signUpData)
+        Axios.post('http://localhost:8000/signup', signUpData)
             .then(response => {
                    
                 

@@ -41,7 +41,7 @@ const Login = () => {
      function handleSubmit(e){
         e.preventDefault();
             
-     Axios.post('http://192.168.0.199:8000/login', loginData, {headers: {
+     Axios.post('http://localhost:8000/login', loginData, {headers: {
         'Access-Control-Allow-Origin': 'http://192.168.0.199', // Set your allowed origin
         // Add other necessary headers based on your requirements
       }}, )
