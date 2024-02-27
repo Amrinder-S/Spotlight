@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 async function getDatabasePool() {
     const pool = new Pool({
         user: 'postgres',
-        host: 'amr.sytes.net',
+        host: '192.168.1.6',
         database: 'buspass',
         password: 'Raghav6969Jit42O',
         port: 7070,
