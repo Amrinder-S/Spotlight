@@ -7,7 +7,7 @@ import  Axios  from 'axios'
 import { useNavigate } from "react-router-dom";
 import Message from '../Components/Alerts/Message'
 const Login = () => {
-
+    const navigate = useNavigate();
     const [loginData,setLoginData] = useState({
         email : "",
         password : "",
@@ -41,20 +41,37 @@ const Login = () => {
      function handleSubmit(e){
         e.preventDefault();
             
-     Axios.post('http://localhost:8000/login', loginData)
+     Axios.post('http://192.168.0.199:8000/login', loginData, {headers: {
+        'Access-Control-Allow-Origin': 'http://192.168.0.199', // Set your allowed origin
+        // Add other necessary headers based on your requirements
+      }}, )
      .then(response =>{
+        console.log(response)
         setMessage({
                        
             display : "block",
-            message : response.data.message,
+            message : `${response.data.message}`,
             type : response.data.type              })
-        
+
+        if (response.data.type == "success"){
+                  
+            setTimeout(() => {
+                navigate(`/profile`,{
+                    state: {
+                        user: response.data
+                    }
+                });
+
+            }, 1000);
+        }
+            
      }) .catch(error => {
         console.error('Error sending form data', error);
         // Handle error as needed
     });
       
-            
+          
+        
             // Handle success as needed
         };
     

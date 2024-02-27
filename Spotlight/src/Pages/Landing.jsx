@@ -9,7 +9,7 @@ const Landing = () => {
     < >
     <div className="flex flex-col items-center">
     <Navbar/>
-    <Search/>
+    {/* <Search/> */}
     <Hero/>
     <Highlights/>
     </div>

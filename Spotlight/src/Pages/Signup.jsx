@@ -68,18 +68,21 @@ const Signup = () => {
         }
 
         
-        Axios.post('http://localhost:8000/signup', signUpData)
+        Axios.post('http://192.168.0.199:8000/signup', signUpData)
             .then(response => {
-                    setMessage({
+                   
+                
+                setMessage({
                        
                         display : "block",
                         message : response.data.message,
                         type : response.data.type              })
                     
+                        if(response.data.type == "success"){
                         setTimeout(() => {
-                            navigate('/login');
+                            navigate('/login',{username : response.data.name});
 
-                        }, 2000);
+                        }, 2000);}
                         
                     })
             
