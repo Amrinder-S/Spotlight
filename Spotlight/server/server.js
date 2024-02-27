@@ -15,43 +15,67 @@ app.get('/message', (req, res) => {
 
 app.post('/login', async (req, res) => {
     const loginData = req.body;
-    const username = 'user@ekus.com';
-    const password = '123';
-    const pool = await getDatabasePool();
-    pool.query(`SELECT * FROM users WHERE username='${username}' AND password='${password}'`, (err, res) => {
-        if (err) {
-            console.error('Error executing query', err.stack);
-        } else {
-            console.log('Connected to PostgreSQL at', res.rows);
-        }
-    });
     console.log(loginData);
-  
-    res.send('Form data received successfully!');
-  });
+    const pool = await getDatabasePool();
+    var username;
+    let id;
+    try {
+      pool.query(`SELECT * FROM users WHERE username='${loginData.email}' AND password='${loginData.password}'`, (err, r) => {
+      console.log(r.rowCount); 
+      if(r.rowCount!=0) {
+        username = r.rows[0].name;
+        id = r.rows[0].userid;
+          return res.send({
+             message : `Logged in successfully! username: ${username}`,
+              type : "success",
+              name: `${username}`,
+              id: `${id}`
+          })
+      } else {
+        return res.send({
+          message: "Username or Password invalid.",
+          type: "error"
+        })
+      }
+      });
+    }
+    catch(e) {
+        return res.send({
+          message: "Username or Password invalid.",
+          type: "error"
+        })
+    } 
+});
 
 
   app.post('/signup', async (req, res) => {
+
+    const pool = await getDatabasePool();
     try {
         const signupData = req.body;
+        console.log(signupData);
         const userexist = false;
-        if(userexist){
+   pool.query(`SELECT * FROM users WHERE username='${signupData.email}'`, (err, r) => {
+    if(r.rowCount>0) {
         return res.send({
-            message : "User Already Exists, Please Create A New Account ",
-            type : "error"
-        })
-    }
-        // const newUser = new UserModel({
-        //     name: signupData.name,
-        //     email: signupData.email,
-        //     password: signupData.password
-        // });
-
-        res.send({
+          message: "User already exists.",
+          type: "error"
+        });
+      }   
+  });
+  pool.query(`INSERT INTO users(username, password, name) VALUES(
+'${signupData.email}',
+'${signupData.password}',
+'${signupData.name}'
+)`, (err, r) => {
+       res.send({
             message : "Congratulations, Account Created Successfully!",
             type : "success"
-        });
-       
+        }); 
+  });
+    
+
+
     } catch (error) {
         console.error('Error saving user:', error);
 
