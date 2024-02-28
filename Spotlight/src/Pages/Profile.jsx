@@ -1,36 +1,25 @@
 import React , {useState, useEffect} from 'react'
 import NavbarSpecific from '../Components/Navbar/NavbarSpecific'
 import Dialogue from '../Components/Alerts/Dialogue';
-
+import Axios from 'axios';
 
 const Profile = () => {
-
-  const [data, setData] = useState(null);
+  
+  const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  function handleReject(){
-    alert("Handle rejection")  
-    // setMessage({
-    //   ...message,
-    //   display : "hidden"
-    // })
-  }
+ 
 
-  function handleApprove(){
-    alert("Handle Approval")
-    // setMessage({
-    //   ...message,
-    //   display : "hidden"
-    // })
-  }
+  
 
-  useEffect(() => {
+useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/get/students');
-        console.log(data)
-        setData(response.data);
+        const response = await Axios.get('http://localhost:8000/get/students');
+        console.log(response.data.rows)
+
+        setData(response.data.rows);
       } 
       catch (error) {
         setError(error);
@@ -38,10 +27,11 @@ const Profile = () => {
       finally {
         setLoading(false);
       }
-    };
-
-    fetchData();
-  }, []);
+    }
+    fetchData()
+  },[])
+  
+ 
 
   return (
     <>
@@ -50,14 +40,15 @@ const Profile = () => {
         backmessage={"Log Out"}
         pagename={`Welcome  Guest`}
       />
-
-      {data.rows.map(({item}) => 
+      <div className="alerts flex flex-col gap-4">
+      {data.map((item) => 
         <Dialogue 
           alertmessage = {item.name} 
-          btnclose = {handleReject}
-          btnaccept = {handleApprove}
         />
       )}
+      </div>
+
+      {/* <button onClick={handleResponse}>Handle</button> */}
 
     </>
   )
