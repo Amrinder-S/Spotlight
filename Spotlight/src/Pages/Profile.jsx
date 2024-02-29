@@ -29,6 +29,7 @@ const Profile = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:8000/get/students');
+        console.log(data)
         setData(response.data);
       } 
       catch (error) {
@@ -50,9 +51,9 @@ const Profile = () => {
         pagename={`Welcome  Guest`}
       />
 
-      {data.row.map(({item}) => 
+      {data.rows.map(({item}) => 
         <Dialogue 
-          alertmessage = {item.name}
+          alertmessage = {item.name} 
           btnclose = {handleReject}
           btnaccept = {handleApprove}
         />
