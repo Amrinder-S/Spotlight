@@ -16,12 +16,12 @@ const Dialogue = ({ alertmessage }) => {
     const data = {
         name: "Raghav Jit",
         rollno: "2104097",
-        course: "Gay Sex",
-        year: "2069",
+        course: "CSE",
+        year: "2025",
         batch: "3rd",
-        semester: "69th",
+        semester: "6th",
         department: "Road No. 64",
-        phonenumber: "SendBobPls",
+        phonenumber: "2345421",
     }
 
 
