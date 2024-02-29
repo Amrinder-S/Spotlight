@@ -1,45 +1,63 @@
-import React , {useState} from 'react'
+import React , {useState, useEffect} from 'react'
 import NavbarSpecific from '../Components/Navbar/NavbarSpecific'
-// import { useLocation } from 'react-router-dom';
 import Dialogue from '../Components/Alerts/Dialogue';
+
+
 const Profile = () => {
-//  const location = useLocation()
-//  const {user} = location.state
- const [message,setMessage] = useState({
-  display : "visible",
-  message : "This is an alert",
-})
 
- function handleReject(){
-  alert("Handle rejection")  
-  setMessage({
-      ...message,
-      display : "hidden"
-    })
- }
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
- function handleApprove(){
-  alert("Handle Approval")
-  setMessage({
-    ...message,
-    display : "hidden"
-  })
- }
+  function handleReject(){
+    alert("Handle rejection")  
+    // setMessage({
+    //   ...message,
+    //   display : "hidden"
+    // })
+  }
+
+  function handleApprove(){
+    alert("Handle Approval")
+    // setMessage({
+    //   ...message,
+    //   display : "hidden"
+    // })
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/get/students');
+        setData(response.data);
+      } 
+      catch (error) {
+        setError(error);
+      } 
+      finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       
-    <NavbarSpecific
-    backmessage={"Log Out"}
-    pagename={`Welcome  Guest`}/>
+      <NavbarSpecific
+        backmessage={"Log Out"}
+        pagename={`Welcome  Guest`}
+      />
 
-    <Dialogue 
-      alertmessage = {message.message}
-      btnclose = {handleReject}
-      btnaccept = {handleApprove}
-      visibility = {message.display}
-    />
+      {data.row.map(({item}) => 
+        <Dialogue 
+          alertmessage = {item.name}
+          btnclose = {handleReject}
+          btnaccept = {handleApprove}
+        />
+      )}
 
-    
     </>
   )
 }
